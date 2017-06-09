@@ -1,0 +1,8 @@
+/build/
+bin/
+.settings/
+
+
+# Word temporary
+~$*.doc*
+
