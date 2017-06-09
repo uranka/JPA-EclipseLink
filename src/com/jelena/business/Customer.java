@@ -13,8 +13,8 @@ public class Customer {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
-	private Long userId;
+    @Column(name = "customer_id")
+	private Long customerId;
 	
 	@Column(name = "first_name")
 	private String firstName;
@@ -24,10 +24,10 @@ public class Customer {
 	private String email;
 	
 	public Long getUserId() {
-		return userId;
+		return customerId;
 	}
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setUserId(Long customerId) {
+		this.customerId = customerId;
 	}
 	public String getFirstName() {
 		return firstName;
