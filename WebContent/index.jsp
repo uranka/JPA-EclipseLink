@@ -14,12 +14,16 @@
 			<th>First Name</th>
 			<th>Last Name</th>
 			<th>Email</th>
+			<th></th>
+			<th></th>
 		</tr>
 		<c:forEach var="customer"  items="${customers}">
 			<tr>
 				<td>${customer.firstName}</td>
 				<td>${customer.lastName}</td>
 				<td>${customer.email}</td>
+				<td><a href="customers?action=display_customer&amp;email=${customer.email}">Update</a></td>
+    			<td><a href="customers?action=delete_customer&amp;email=${customer.email}">Delete</a></td>
 			</tr>
 		</c:forEach>
 	</table>
