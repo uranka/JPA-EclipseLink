@@ -1,5 +1,7 @@
 package com.jelena.data;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
@@ -72,16 +74,21 @@ public class CustomerDB {
     
     public static Customer getCustomerByEmail(String email) {    	
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		System.out.println("~~~~~~~~~~~~~before select");
 		String qString = "SELECT c FROM Customer c " +
-						"WHERE c.email = :email";
-		TypedQuery<Customer> q = em.createQuery(qString, Customer.class);
-		q.setParameter("email", email);
+					"WHERE c.email = :email";
 		
+		TypedQuery<Customer> q = em.createQuery(qString, Customer.class);
+		System.out.println("~~~~~~~~~~~~~after create query");
+		q.setParameter("email", email);	
+				
 		Customer customer = null;
 		try {
+			System.out.println("~~~~~~~~inside try~~~~~");
 			customer = q.getSingleResult();
 		} catch (NoResultException e) {
-            System.out.println(e);;
+			System.out.println("~~~~~~~~inside catch~~~~~");
+            System.out.println(e);            
         } finally {
             em.close();
         }
@@ -89,8 +96,27 @@ public class CustomerDB {
 	}
     
     public static boolean emailExists(String email) {
+    	System.out.println("~~~~~~~~inside emailExists~~~~~");
     	Customer customer = getCustomerByEmail(email);
     	return customer != null;
+    }
+    
+    public static List<Customer> getAllCustomers() {
+    	System.out.println("~~~~~~~~inside getAllCustomers~~~~~");
+    	  EntityManager em = DBUtil.getEmFactory().createEntityManager();
+          String qString = "SELECT c from Customer c";
+          TypedQuery<Customer> q = em.createQuery(qString, Customer.class);
+
+          List<Customer> customers;
+          try {
+        	  customers = q.getResultList();
+              if (customers == null || customers.isEmpty())
+            	  customers = null;
+          } 
+          finally {
+              em.close();
+          }
+          return customers;
     }
     
 }
