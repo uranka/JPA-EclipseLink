@@ -26,28 +26,6 @@ public class InvoiceDB {
         }
     }
     
-  /* netestirana metoda */  
-    public static List<Invoice> getInvoicesByEmail (String email) {
-    	EntityManager em = DBUtil.getEmFactory().createEntityManager();   
-    	
-    	Customer customer = CustomerDB. getCustomerByEmail(email);
-    	
-    	String qString = "SELECT i FROM Invoice i " +
-    				"WHERE i.CUSTOMER_customer_id = :cid";
-    	TypedQuery<Invoice> q = em.createQuery(qString, Invoice.class);
-    	q.setParameter("cid", customer.getCustomerId());
-	
-    	List<Invoice> invoices;
-        try {
-        	invoices = q.getResultList();
-            if (invoices == null || invoices.isEmpty())
-            	invoices = null;
-        } 
-        finally {
-            em.close();
-        }
-        return invoices;    	
-    }
     
     public static List<Invoice> getInvoicesByCustomer (Customer customer) {
     	EntityManager em = DBUtil.getEmFactory().createEntityManager();   
