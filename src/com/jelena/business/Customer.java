@@ -23,10 +23,10 @@ public class Customer {
 	private String lastName;
 	private String email;
 	
-	public Long getUserId() {
+	public Long getCustomerId() {
 		return customerId;
 	}
-	public void setUserId(Long customerId) {
+	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
 	public String getFirstName() {

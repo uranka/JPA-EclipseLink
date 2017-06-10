@@ -16,6 +16,8 @@
 			<th>Email</th>
 			<th></th>
 			<th></th>
+			<th></th>
+			<th></th>
 		</tr>
 		<c:forEach var="customer"  items="${customers}">
 			<tr>
@@ -24,6 +26,8 @@
 				<td>${customer.email}</td>
 				<td><a href="customers?action=display_customer&amp;email=${customer.email}">Update</a></td>
     			<td><a href="customers?action=delete_customer&amp;email=${customer.email}">Delete</a></td>
+    			<td><a href="invoices?action=display_empty_invoice&amp;email=${customer.email}">Add invoice</a></td>
+    			<td><a href="invoices?action=show_invoices&amp;email=${customer.email}">Show invoices</a></td>
 			</tr>
 		</c:forEach>
 	</table>

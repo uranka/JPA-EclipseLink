@@ -12,6 +12,15 @@
         <servlet-name>CustomersServlet</servlet-name>
         <url-pattern>/customers</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>InvoicesServlet</servlet-name>
+        <servlet-class>com.jelena.controller.InvoicesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>InvoicesServlet</servlet-name>
+        <url-pattern>/invoices</url-pattern>
+    </servlet-mapping>      
       
     <session-config>
         <session-timeout>30</session-timeout>
