@@ -16,8 +16,11 @@
 		<p>First Name: ${customer.firstName}</p>    
 		<p>Last Name: ${customer.lastName}</p>                 
              
-        <label>is processed:</label>
-        <input type="checkbox" name="isProcessed" value="yes"><br/>                      
+        <label for="isProcessed">is processed:</label>
+        <input type="checkbox" name="isProcessed" value="yes" id="isProcessed"><br/>    
+        
+        <label for="invoiceDate">Invoice date:</label>
+        <input type="date" name="invoiceDate" id="invoiceDate"><br/>                  
                            
         <input type="submit" value="Add invoice">
     </form>

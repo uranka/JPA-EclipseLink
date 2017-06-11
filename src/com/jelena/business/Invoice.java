@@ -1,5 +1,7 @@
 package com.jelena.business;
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,6 +15,10 @@ public class Invoice {
 	
 	@Column(name="is_processed")	
 	boolean processed;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="invoice_date")
+	private Date invoiceDate;
 		
 	@ManyToOne
 	private Customer customer;
@@ -33,6 +39,14 @@ public class Invoice {
 		this.processed = processed;
 	}
 
+	public Date getInvoiceDate() {
+		return invoiceDate;
+	}
+
+	public void setInvoiceDate(Date invoiceDate) {
+		this.invoiceDate = invoiceDate;
+	}
+
 	public Customer getCustomer() {
 		return customer;
 	}
@@ -40,4 +54,6 @@ public class Invoice {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}	
+	
+	
 }

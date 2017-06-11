@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +14,8 @@
 	<p>Last Name: ${customer.lastName}</p> 
 	<p>Invoices:</p>
 	<c:forEach var="invoice"  items="${invoices}">                
-         <p>number: ${invoice.invoiceNumber}, processed: ${invoice.processed}</p>
+         <p>number: ${invoice.invoiceNumber}, processed: ${invoice.processed},
+          invoice date: <fmt:formatDate value="${invoice.invoiceDate}" pattern="dd.MM.yyyy." /></p>          
      </c:forEach>           
 </body>
 </html>    

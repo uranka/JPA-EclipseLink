@@ -1,6 +1,9 @@
 package com.jelena.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -49,12 +52,27 @@ public class InvoicesServlet extends HttpServlet {
 				isProcessed = false;
 			}
 			
+			// getParameter returns the value of a request parameter as a String, 
+			// or null if the parameter does not exist
+			// datum vraca u obliku yyyy-mm-dd
+			String invoiceDateString = request.getParameter("invoiceDate");
+			System.out.println("invoiceDateString:" + invoiceDateString);
+			
+			// convert String to java.util.Date
+			Date invoiceDate = null;
+			try {
+				invoiceDate = new SimpleDateFormat("yyyy-MM-dd").parse(invoiceDateString);
+			} catch (ParseException e) {				
+				e.printStackTrace();
+			}
+			
 			 // get customer from session
 			Customer customer  = (Customer)session.getAttribute("customer");
 			
 			Invoice invoice = new Invoice();
 			invoice.setProcessed(isProcessed);
 			invoice.setCustomer(customer);
+			invoice.setInvoiceDate(invoiceDate);
 			
 			InvoiceDB.insert(invoice);		
 			url="/index.jsp";
