@@ -6,3 +6,10 @@ bin/
 # Word temporary
 ~$*.doc*
 
+# PowerPoint temporary
+~$*.ppt*
+
+# PowerPoint
+*.pptx
+
+
