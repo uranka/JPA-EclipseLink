@@ -20,7 +20,17 @@
     <servlet-mapping>
         <servlet-name>InvoicesServlet</servlet-name>
         <url-pattern>/invoices</url-pattern>
-    </servlet-mapping>      
+    </servlet-mapping>   
+
+   <servlet>
+        <servlet-name>ProductsServlet</servlet-name>
+        <servlet-class>com.jelena.controller.ProductsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProductsServlet</servlet-name>
+        <url-pattern>/products</url-pattern>
+    </servlet-mapping>     
+           
       
     <session-config>
         <session-timeout>30</session-timeout>

@@ -1,6 +1,8 @@
 package com.jelena.business;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -22,6 +24,12 @@ public class Invoice {
 		
 	@ManyToOne
 	private Customer customer;
+	
+	// cascade- sta god radim sa invoice to se primeni i na njegove LineItem	
+	@OneToMany( cascade = CascadeType.ALL,
+			 mappedBy="invoice", orphanRemoval = true) 
+	private List<LineItem> lineItems = new ArrayList<LineItem>();
+	
 
 	public Long getInvoiceNumber() {
 		return invoiceNumber;
@@ -53,7 +61,22 @@ public class Invoice {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	public List<LineItem> getLineItems() {
+		return lineItems;
+	}
+/*
+	public void setLineItems(List<LineItem> lineItems) {
+		this.lineItems = lineItems;
+		
+	}*/
+	
+	//  dodati addLineItem koji dodaje samo jedan line item, sa child.setParent(this);
+	// ovo sam morala ovako da uradim inace lineItem nije svestan svog invoica i u 
+	// tabelu lineitems se snimi sve osim invoice number
+	public void addLineItem(LineItem lineItem) {
+		lineItems.add(lineItem);
+		lineItem.setInvoice(this);
 	}	
-	
-	
 }

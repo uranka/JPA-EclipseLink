@@ -73,21 +73,17 @@ public class CustomerDB {
     }
     
     public static Customer getCustomerByEmail(String email) {    	
-		EntityManager em = DBUtil.getEmFactory().createEntityManager();
-		System.out.println("~~~~~~~~~~~~~before select");
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();		
 		String qString = "SELECT c FROM Customer c " +
 					"WHERE c.email = :email";
 		
-		TypedQuery<Customer> q = em.createQuery(qString, Customer.class);
-		System.out.println("~~~~~~~~~~~~~after create query");
+		TypedQuery<Customer> q = em.createQuery(qString, Customer.class);		
 		q.setParameter("email", email);	
 				
 		Customer customer = null;
-		try {
-			System.out.println("~~~~~~~~inside try~~~~~");
+		try {			
 			customer = q.getSingleResult();
-		} catch (NoResultException e) {
-			System.out.println("~~~~~~~~inside catch~~~~~");
+		} catch (NoResultException e) {			
             System.out.println(e);            
         } finally {
             em.close();
@@ -95,14 +91,12 @@ public class CustomerDB {
 		return customer;
 	}
     
-    public static boolean emailExists(String email) {
-    	System.out.println("~~~~~~~~inside emailExists~~~~~");
+    public static boolean emailExists(String email) {    	
     	Customer customer = getCustomerByEmail(email);
     	return customer != null;
     }
     
-    public static List<Customer> getAllCustomers() {
-    	System.out.println("~~~~~~~~inside getAllCustomers~~~~~");
+    public static List<Customer> getAllCustomers() {    	
     	  EntityManager em = DBUtil.getEmFactory().createEntityManager();
           String qString = "SELECT c from Customer c";
           TypedQuery<Customer> q = em.createQuery(qString, Customer.class);

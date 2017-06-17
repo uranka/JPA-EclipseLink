@@ -38,5 +38,9 @@
 	<!-- prikazi formu koja prikuplja podatke o musteriji -->
 	<p><a href="customers?action=display_empty_customer">Add new customer</a></p> 
 	
+	<!-- prikazi formu koja prikuplja podatke o proizvodu -->
+	<p><a href="products?action=display_empty_product">Add new product</a></p>
+	
+	
 </body>
 </html>

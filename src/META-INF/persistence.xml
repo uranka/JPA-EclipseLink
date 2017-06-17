@@ -10,7 +10,9 @@
 			<property name="javax.persistence.jdbc.password" value=""/>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>			
 			<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
-			
+			<!-- value="drop-and-create" izbrise sve tabele iz baze i kreira ih ponovo -->
+			<!--  value="create" -->
+			<property name="eclipselink.logging.level" value="FINE" />
 		</properties>
 	</persistence-unit>
 </persistence>
