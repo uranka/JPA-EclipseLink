@@ -13,10 +13,24 @@
 	<p>First Name: ${customer.firstName}</p>    
 	<p>Last Name: ${customer.lastName}</p> 
 	<p>Invoices:</p>
-	<c:forEach var="invoice"  items="${invoices}">                
-         <p>number: ${invoice.invoiceNumber}, processed: ${invoice.processed},
-          invoice date: <fmt:formatDate value="${invoice.invoiceDate}" pattern="dd.MM.yyyy." /></p>          
-     </c:forEach>           
+	<table border="1">
+		<tr>
+			<th>invoice number</th>
+			<th>processed</th>
+			<th>invoice date</th>
+			<th>update</th>
+			<th>delete</th>			
+		</tr>
+		<c:forEach var="invoice"  items="${invoices}">  
+			<tr>              
+         		<td>${invoice.invoiceNumber}</td>
+         		<td>${invoice.processed}</td>
+          		<td><fmt:formatDate value="${invoice.invoiceDate}" pattern="dd.MM.yyyy." /></td> 
+          		<td>update</td>
+          		<td><a href="invoices?action=delete_invoice&amp;id=${invoice.invoiceNumber}">delete</a></td>
+        	</tr>        
+     	</c:forEach>
+     </table>           
 </body>
 </html>    
     

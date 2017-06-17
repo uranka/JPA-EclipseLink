@@ -26,7 +26,6 @@ public class InvoiceDB {
         }
     }
     
-    
     public static List<Invoice> getInvoicesByCustomer (Customer customer) {
     	EntityManager em = DBUtil.getEmFactory().createEntityManager();   
     	    	    
@@ -45,7 +44,32 @@ public class InvoiceDB {
             em.close();
         }
         return invoices;    	
-    }    
-	
-
+    } 
+    
+    
+    public static void delete (Invoice invoice) {
+    	EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        trans.begin();     
+        try {
+        	em.remove(em.merge(invoice));
+        	trans.commit();
+        }catch (Exception e) {
+            System.out.println(e);
+            trans.rollback();
+        } finally {
+            em.close();
+        }
+    }	
+    
+	public static Invoice getInvoiceById(Long invoiceNumber) {
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		try {
+			Invoice invoice = em.find(Invoice.class, invoiceNumber); 			
+			return invoice;
+		}
+		finally{
+			em.close();
+		}
+	}    
 }

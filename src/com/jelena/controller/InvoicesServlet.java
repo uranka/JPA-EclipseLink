@@ -21,9 +21,6 @@ import com.jelena.data.InvoiceDB;
 import com.jelena.data.ProductDB;
 
 public class InvoicesServlet extends HttpServlet  {
-	
-
-
 
 	@Override
 	protected void doPost(HttpServletRequest request,
@@ -47,6 +44,7 @@ public class InvoicesServlet extends HttpServlet  {
         	session.setAttribute("invoice", invoice);
 			url="/invoice.jsp";
 		}
+		
 		else if(action.equals("add_invoice")) {
 			System.out.println("Adding invoice");
 			if (request.getParameter("addLineItem") != null) {
@@ -112,6 +110,7 @@ public class InvoicesServlet extends HttpServlet  {
 				url="/index.jsp";
 			}
 		}
+		
 		else if(action.equals("show_invoices")) {
 			System.out.println("Showing customer's invoices");
 			// get specified email
@@ -126,6 +125,14 @@ public class InvoicesServlet extends HttpServlet  {
 	        request.setAttribute("invoices", invoices);
 	        
 	        url="/customer_invoices.jsp";			
+		}
+		
+		else if(action.equals("delete_invoice")) {
+			System.out.println("Deleting invoice");
+			Long invoiceNumber = Long.parseLong(request.getParameter("id"));
+			System.out.println("Deleting invoice number" + invoiceNumber);
+			Invoice invoice = InvoiceDB.getInvoiceById(invoiceNumber);
+			InvoiceDB.delete(invoice);			
 		}
 		
 		getServletContext().getRequestDispatcher(url).forward(request, response);

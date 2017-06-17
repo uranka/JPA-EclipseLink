@@ -79,4 +79,9 @@ public class Invoice {
 		lineItems.add(lineItem);
 		lineItem.setInvoice(this);
 	}	
+	
+	public void removeLineItem(LineItem lineItem) {
+		lineItem.setInvoice(null);
+		this.lineItems.remove(lineItem);
+	}
 }
