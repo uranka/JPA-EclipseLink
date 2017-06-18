@@ -71,5 +71,20 @@ public class InvoiceDB {
 		finally{
 			em.close();
 		}
-	}    
+	}
+	
+    public static void update (Invoice invoice) {
+    	EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        trans.begin();        
+        try {
+        	em.merge(invoice);
+        	trans.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+            trans.rollback();
+        } finally {
+            em.close();
+        }
+    }	
 }

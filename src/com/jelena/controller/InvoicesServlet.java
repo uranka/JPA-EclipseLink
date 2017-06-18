@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,72 +45,74 @@ public class InvoicesServlet extends HttpServlet  {
         	session.setAttribute("invoice", invoice);
 			url="/invoice.jsp";
 		}
-		
+/***********************************************************************************/			
 		else if(action.equals("add_invoice")) {
-			System.out.println("Adding invoice");
+			// get invoice from session
+			Invoice invoice = (Invoice)session.getAttribute("invoice");
+			System.out.println(invoice==null? "invoice je null**" : "invoice nije null**");
+			
+			//get new data from request and set that data into invoice
+			boolean isProcessed;
+			String isProcessedString = request.getParameter("isProcessed");			
+			if (isProcessedString != null) {
+				isProcessed = true;
+			}
+			else {
+				isProcessed = false;
+			}						
+			String invoiceDateString = request.getParameter("invoiceDate");
+			System.out.println("invoiceDateString:" + invoiceDateString);
+			
+			// convert String to java.util.Date
+			Date invoiceDate = null;
+			try {
+				invoiceDate = new SimpleDateFormat("yyyy-MM-dd").parse(invoiceDateString);
+			} catch (ParseException e) {				
+				e.printStackTrace();
+			}
+			
+			invoice.setProcessed(isProcessed);			
+			invoice.setInvoiceDate(invoiceDate);	
+			
+			// get customer from session
+			Customer customer = (Customer) session.getAttribute("customer");
+			invoice.setCustomer(customer);
+			
+			int numberOfLineItems = Integer.parseInt(request.getParameter("numberOfLineItems"));			
+			System.out.println("numberOfLineItems = "  + numberOfLineItems);
+			List<LineItem> lineItems = new ArrayList<LineItem>();				
+			for (int i = 0; i < numberOfLineItems; i++) {
+				String pid = "productId" + i;
+				String pq = "productQuantity" + i;
+				int productId = Integer.parseInt(request.getParameter(pid));
+				int productQuantity = Integer.parseInt(request.getParameter(pq));
+				LineItem lineItem = new LineItem();
+				lineItem.setProduct(ProductDB.getProductById(productId));
+				lineItem.setQuantity(productQuantity);
+				lineItems.add(lineItem);
+			}
+			invoice.setLineItems(lineItems);	
+			
+			// check whether add line item or update submit button was pressed
 			if (request.getParameter("addLineItem") != null) {
-				System.out.println("adding line item");							
-				// uzmi invoice iz session-a
-				Invoice invoice = (Invoice)session.getAttribute("invoice");
-				// uzmi parametre iz requesta, ali prvi put ih nema
-								
-				if (request.getParameter("productId") != null) {
-					int productId = Integer.parseInt(request.getParameter("productId"));
-					if (request.getParameter("productQuantity") != null) {
-						int productQuantity = Integer.parseInt(request.getParameter("productQuantity"));
-						// stavi ih u line item
-						LineItem lineItem = new LineItem();
-						lineItem.setProduct(ProductDB.getProductById(productId));
-						lineItem.setQuantity(productQuantity);											
-						
-						//dodaj taj line item u listu line itema invoica
-						invoice.addLineItem(lineItem); // ova fja namesta i da je ovaj lineItem svestan svog invoica											
-					}
-				}				
-		
-				session.setAttribute("invoice", invoice);							
-				url="/invoice.jsp";
-			}// kada dodajes lineitem ne dodajes invoice
-			else {			
-				boolean isProcessed;
-				String isProcessedString = request.getParameter("isProcessed");
-				// unchecked checkboxes are not part of the request.
-				if (isProcessedString != null) {
-					isProcessed = true;
-				}
-				else {
-					isProcessed = false;
-				}
-				
-				// getParameter returns the value of a request parameter as a String, 
-				// or null if the parameter does not exist
-				// datum vraca u obliku yyyy-mm-dd
-				String invoiceDateString = request.getParameter("invoiceDate");
-				System.out.println("invoiceDateString:" + invoiceDateString);
-				
-				// convert String to java.util.Date
-				Date invoiceDate = null;
-				try {
-					invoiceDate = new SimpleDateFormat("yyyy-MM-dd").parse(invoiceDateString);
-				} catch (ParseException e) {				
-					e.printStackTrace();
-				}
-				
-				 // get customer from session
-				Customer customer  = (Customer)session.getAttribute("customer");
-				
-				//Invoice invoice = new Invoice();
-				// uzmi invoice iz session-a
-				Invoice invoice = (Invoice)session.getAttribute("invoice");
-								
-				invoice.setProcessed(isProcessed);
-				invoice.setCustomer(customer);
-				invoice.setInvoiceDate(invoiceDate);
-										
-				InvoiceDB.insert(invoice);		
+				System.out.println("adding line item");
+				// add new empty line item to invoice
+				LineItem lineItem = new LineItem();				
+				invoice.addLineItem(lineItem);
+				// set invoice into session
+				session.setAttribute("invoice", invoice);	
+				// forward to invoice page for further updating
+				url="/invoice.jsp";	
+			}
+			else {
+				System.out.println("adding invoice");
+				// insert invoice into database
+				InvoiceDB.insert(invoice);	
+				// forward to index page
 				url="/index.jsp";
 			}
-		}
+		}	
+/***********************************************************************************/
 		
 		else if(action.equals("show_invoices")) {
 			System.out.println("Showing customer's invoices");
@@ -135,6 +138,77 @@ public class InvoicesServlet extends HttpServlet  {
 			InvoiceDB.delete(invoice);			
 		}
 		
+		else if(action.equals("display_invoice")) {			
+			Long invoiceNumber = Long.parseLong(request.getParameter("id"));
+			System.out.println("Displaying invoice number " + invoiceNumber);
+			Invoice invoice = InvoiceDB.getInvoiceById(invoiceNumber);
+			session.setAttribute("invoice", invoice);
+			url="/invoice_for_update.jsp";
+		}
+/***********************************************************************************/			
+		else if(action.equals("update_invoice")) {
+			// get invoice from session
+			Invoice invoice = (Invoice)session.getAttribute("invoice");
+			System.out.println(invoice==null? "invoice je null**" : "invoice nije null**");
+			
+			//get new data from request and set that data into invoice
+			boolean isProcessed;
+			String isProcessedString = request.getParameter("isProcessed");			
+			if (isProcessedString != null) {
+				isProcessed = true;
+			}
+			else {
+				isProcessed = false;
+			}						
+			String invoiceDateString = request.getParameter("invoiceDate");
+			System.out.println("invoiceDateString:" + invoiceDateString);
+			
+			// convert String to java.util.Date
+			Date invoiceDate = null;
+			try {
+				invoiceDate = new SimpleDateFormat("yyyy-MM-dd").parse(invoiceDateString);
+			} catch (ParseException e) {				
+				e.printStackTrace();
+			}
+			
+			invoice.setProcessed(isProcessed);			
+			invoice.setInvoiceDate(invoiceDate);					
+			
+			int numberOfLineItems = Integer.parseInt(request.getParameter("numberOfLineItems"));			
+			System.out.println("numberOfLineItems = "  + numberOfLineItems);
+			List<LineItem> lineItems = new ArrayList<LineItem>();				
+			for (int i = 0; i < numberOfLineItems; i++) {
+				String pid = "productId" + i;
+				String pq = "productQuantity" + i;
+				int productId = Integer.parseInt(request.getParameter(pid));
+				int productQuantity = Integer.parseInt(request.getParameter(pq));
+				LineItem lineItem = new LineItem();
+				lineItem.setProduct(ProductDB.getProductById(productId));
+				lineItem.setQuantity(productQuantity);
+				lineItems.add(lineItem);
+			}
+			invoice.setLineItems(lineItems);	
+			
+			// check whether add line item or update submit button was pressed
+			if (request.getParameter("addLineItem") != null) {
+				System.out.println("adding line item");
+				// add new empty line item to invoice
+				LineItem lineItem = new LineItem();				
+				invoice.addLineItem(lineItem);
+				// set invoice into session
+				session.setAttribute("invoice", invoice);	
+				// forward to invoice_for_update page for further updating
+				url="/invoice_for_update.jsp";	
+			}
+			else {
+				System.out.println("updating invoice");
+				// save updated invoice into database
+				InvoiceDB.update(invoice);	
+				// forward to index page
+				url="/index.jsp";
+			}
+		}	
+/***********************************************************************************/			
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 	

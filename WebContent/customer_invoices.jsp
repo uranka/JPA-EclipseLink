@@ -26,7 +26,7 @@
          		<td>${invoice.invoiceNumber}</td>
          		<td>${invoice.processed}</td>
           		<td><fmt:formatDate value="${invoice.invoiceDate}" pattern="dd.MM.yyyy." /></td> 
-          		<td>update</td>
+          		<td><a href="invoices?action=display_invoice&amp;id=${invoice.invoiceNumber}">update</a></td>
           		<td><a href="invoices?action=delete_invoice&amp;id=${invoice.invoiceNumber}">delete</a></td>
         	</tr>        
      	</c:forEach>

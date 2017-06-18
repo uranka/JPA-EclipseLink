@@ -66,11 +66,15 @@ public class Invoice {
 	public List<LineItem> getLineItems() {
 		return lineItems;
 	}
-/*
+
 	public void setLineItems(List<LineItem> lineItems) {
 		this.lineItems = lineItems;
+		// za svaki ovaj lineItem iz liste postavi da mu je invoice this
+		for (LineItem li : lineItems) {
+			li.setInvoice(this);
+		}
 		
-	}*/
+	}
 	
 	//  dodati addLineItem koji dodaje samo jedan line item, sa child.setParent(this);
 	// ovo sam morala ovako da uradim inace lineItem nije svestan svog invoica i u 

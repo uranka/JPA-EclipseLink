@@ -25,20 +25,18 @@
         <input type="date" name="invoiceDate" id="invoiceDate"><br/>                  
         
         <!-- proveri duzinu lineitema u invoicu, pa sve sto ima prikazi -->
-        <c:if test="${fn: length(invoice.lineItems) gt 0}">
-        <!-- 
-        	<c:forEach begin="0" end="${fn:length(invoice.lineItems)-1}" varStatus="status">
-        	${status.count}
-        	</c:forEach>
-        -->
-        <c:forEach var="lineItem" items="${invoice.lineItems}">
-        	product name: ${lineItem.product.name} - quantity: ${lineItem.quantity} <br/>
-        	      	 
+        <c:if test="${fn: length(invoice.lineItems) gt 0}">       
+        <c:forEach var="lineItem" items="${invoice.lineItems}" varStatus="count">        
+        	product id: <input type="number" name="productId${count.index}" value="${lineItem.product.productId}"> 
+        	product quantity: <input type="number" name="productQuantity${count.index}" value="${lineItem.quantity}">         	      	      	 
         </c:forEach>
         </c:if>
+        
+        <!--  
         product id: <input type="number" name="productId" > 
         product quantity: <input type="number" name="productQuantity">  
-                           
+        -->
+		<input type="hidden" name="numberOfLineItems" value=${fn: length(invoice.lineItems)} />                              
         <input type="submit" value="Add line item" name = "addLineItem"><br/> 
         <input type="submit" value="Add invoice" name = "addInvoice">
         
