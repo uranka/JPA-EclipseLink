@@ -166,7 +166,7 @@ public class InvoicesServlet extends HttpServlet  {
 			// convert String to java.util.Date
 			Date invoiceDate = null;
 			try {
-				invoiceDate = new SimpleDateFormat("yyyy-MM-dd").parse(invoiceDateString);
+				invoiceDate = new SimpleDateFormat("yyyy-MM-dd").parse(invoiceDateString);				
 			} catch (ParseException e) {				
 				e.printStackTrace();
 			}

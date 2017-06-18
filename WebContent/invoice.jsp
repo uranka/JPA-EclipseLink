@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,21 +22,19 @@
         <label for="isProcessed">is processed:</label>
         <input type="checkbox" name="isProcessed" value="yes" id="isProcessed"><br/>    
         
+        <fmt:formatDate value="${invoice.invoiceDate}" pattern="yyyy-MM-dd"  var="dat"/>
         <label for="invoiceDate">Invoice date:</label>
-        <input type="date" name="invoiceDate" id="invoiceDate"><br/>                  
+        <input type="date" name="invoiceDate" id="invoiceDate" value="${dat}"><br/>                  
         
         <!-- proveri duzinu lineitema u invoicu, pa sve sto ima prikazi -->
         <c:if test="${fn: length(invoice.lineItems) gt 0}">       
-        <c:forEach var="lineItem" items="${invoice.lineItems}" varStatus="count">        
+        <c:forEach var="lineItem" items="${invoice.lineItems}" varStatus="count">
+        	<br/>       
         	product id: <input type="number" name="productId${count.index}" value="${lineItem.product.productId}"> 
         	product quantity: <input type="number" name="productQuantity${count.index}" value="${lineItem.quantity}">         	      	      	 
         </c:forEach>
         </c:if>
-        
-        <!--  
-        product id: <input type="number" name="productId" > 
-        product quantity: <input type="number" name="productQuantity">  
-        -->
+               
 		<input type="hidden" name="numberOfLineItems" value=${fn: length(invoice.lineItems)} />                              
         <input type="submit" value="Add line item" name = "addLineItem"><br/> 
         <input type="submit" value="Add invoice" name = "addInvoice">

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,10 +33,12 @@
             </c:otherwise>
         </c:choose>     <br/>      
         
+        
+        <fmt:formatDate value="${invoice.invoiceDate}" pattern="yyyy-MM-dd"  var="dat"/>
         <label for="invoiceDate">Invoice date:</label>
-        <input type="date" name="invoiceDate" id="invoiceDate" 
-        value="${invoice.invoiceDate}"><br/>
-        <!-- trebao bi mi Date to String, value je datum u obliku yyyy-mm-dd -->               
+        <input type="date" name="invoiceDate" id="invoiceDate" value="${dat}" ><br/>                   
+        <!-- treba mi invoice datum u obliku yyyy-mm-dd da bi mi prikazao u date kontroli, a u kom ga ja imam
+        imam u Date obliku, treba mi taj DAte u String yyyy-mm-dd da se pretvori -->
         
         <!-- proveri duzinu lineitema u invoicu, pa sve sto ima prikazi -->
         <c:if test="${fn: length(invoice.lineItems) gt 0}">      
