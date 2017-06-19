@@ -42,6 +42,9 @@
 	<!-- prikazi formu koja prikuplja podatke o proizvodu -->
 	<p><a href="products?action=display_empty_product">Add new product</a></p>
 	
+	<!-- poziv doGet , action=null -->
+	<p><a href="products">Show all products</a></p>
+	
 	
 </body>
 </html>

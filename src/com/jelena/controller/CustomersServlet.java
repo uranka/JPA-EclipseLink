@@ -71,14 +71,14 @@ public class CustomersServlet extends HttpServlet {
             request.setAttribute("customers", customers);            
             request.setAttribute("message", message);
 		}
+		
 		else if(action.equals("display_customer")) {			
 			// get specified email
 	        String emailAddress = request.getParameter("email");
 	        // get customer for given email
 	        Customer customer = CustomerDB.getCustomerByEmail(emailAddress);
 	        // set as session attribute
-	        session.setAttribute("customer", customer);            
-	        // forward to customer.jsp
+	        session.setAttribute("customer", customer);            	        
 	        url = "/customer_for_update.jsp";	        
 		}
 		else if (action.equals("update_customer")) {
@@ -102,6 +102,7 @@ public class CustomersServlet extends HttpServlet {
 	        // forward to index.jsp
 	        url = "/index.jsp";			
 		}
+		
 		else if (action.equals("delete_customer")) {
 			// get specified email
 	        String emailAddress = request.getParameter("email");
