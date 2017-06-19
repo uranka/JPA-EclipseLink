@@ -178,10 +178,12 @@ public class InvoicesServlet extends HttpServlet  {
 			System.out.println("numberOfLineItems = "  + numberOfLineItems);
 			List<LineItem> lineItems = new ArrayList<LineItem>();				
 			for (int i = 0; i < numberOfLineItems; i++) {
-				String pid = "productId" + i;
+				String pid = "productId" + i; 
 				String pq = "productQuantity" + i;
 				int productId = Integer.parseInt(request.getParameter(pid));
 				int productQuantity = Integer.parseInt(request.getParameter(pq));
+				System.out.println("~~~~~~~~~~~~~~~productId = " + productId);
+				System.out.println("~~~~~~~~~~~~~~~productQuantity = " + productQuantity);
 				LineItem lineItem = new LineItem();
 				lineItem.setProduct(ProductDB.getProductById(productId));
 				lineItem.setQuantity(productQuantity);
@@ -200,12 +202,31 @@ public class InvoicesServlet extends HttpServlet  {
 				// forward to invoice_for_update page for further updating
 				url="/invoice_for_update.jsp";	
 			}
-			else {
+			else if (request.getParameter("update") != null) {
 				System.out.println("updating invoice");
 				// save updated invoice into database
 				InvoiceDB.update(invoice);	
 				// forward to index page
-				url="/index.jsp";
+				url="/index.jsp";						
+			}
+			else { // delete line item,  ukloni iz liste tog jednog za koga postoji
+				// request parametar 
+				// kada uradim update invoice obrisace se i taj line item
+				System.out.println("deleting line item");
+				for (int i = 0; i < numberOfLineItems; i++) {					
+					String dli = "deleteLineItem" + i;
+					if (request.getParameter(dli) != null) {
+						System.out.println("found line item that i should remove, line item i = " + i);
+						// remove lineItem with index i
+						LineItem lineItem = lineItems.get(i);
+						lineItems.remove(lineItem);	
+						break;									
+					}					
+				}
+				invoice.setLineItems(lineItems);
+				// set invoice into session
+				session.setAttribute("invoice", invoice);
+				url="/invoice_for_update.jsp";
 			}
 		}	
 /***********************************************************************************/			

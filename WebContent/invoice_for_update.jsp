@@ -45,14 +45,18 @@
         	<c:forEach var="lineItem" items="${invoice.lineItems}" varStatus="count">
         		<br/> product name: ${lineItem.product.name} - quantity: ${lineItem.quantity} <br/> 
         		product id: <input type="number" name="productId${count.index}" value="${lineItem.product.productId}"> 
-        		product quantity: <input type="number" name="productQuantity${count.index}" value="${lineItem.quantity}">         	      	
+        		product quantity: <input type="number" name="productQuantity${count.index}" value="${lineItem.quantity}">
+        		<!--  
+        		<a href="invoices?action=delete_line_item&amp;id=${lineItem.lineItemId}">delete line item</a> 
+        		--> 
+        		<input type="submit" value="Delete line item" name = "deleteLineItem${count.index}"><br/>        	      	
         	</c:forEach>
         </c:if>      
         <br/>   
         <input type="submit" value="Add line item" name = "addLineItem"><br/> 
         <br/> 
         <input type="hidden" name="numberOfLineItems" value=${fn: length(invoice.lineItems)} />                 
-        <input type="submit" value="Update">
+        <input type="submit" name="update" value="Update" >
     </form>
 </body>
 </html>    
