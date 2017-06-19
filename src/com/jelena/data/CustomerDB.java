@@ -113,4 +113,13 @@ public class CustomerDB {
           return customers;
     }
     
+    public static boolean invoicesExist (Customer customer) {
+    	if (InvoiceDB.getInvoicesByCustomer(customer) == null) {
+    		return false;
+    	}
+    	else {
+    		return true;
+    	}
+    }
+    
 }

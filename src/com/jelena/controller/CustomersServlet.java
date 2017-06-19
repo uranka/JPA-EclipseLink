@@ -106,12 +106,18 @@ public class CustomersServlet extends HttpServlet {
 			// get specified email
 	        String emailAddress = request.getParameter("email");
 	        // get customer for given email
-	        Customer customer = CustomerDB.getCustomerByEmail(emailAddress);	        
-	        CustomerDB.delete(customer);
-	        
+	        Customer customer = CustomerDB.getCustomerByEmail(emailAddress);	
+	        // check if customer has invoices, if he does do not delete him
+	        if (CustomerDB.invoicesExist(customer)) {
+	        	String message = "Cannot delete customer. Please delete his invoices first.";
+	        	request.setAttribute("message", message);	        	
+	        }
+	        else {	        
+	        	CustomerDB.delete(customer);	        		       
+	        }
 	        List<Customer> customers =  CustomerDB.getAllCustomers(); 
-	        request.setAttribute("customers", customers);
-	        url = "/index.jsp";	
+ 	        request.setAttribute("customers", customers);
+	        url = "/index.jsp";	       	
 		}
 		
 		getServletContext().getRequestDispatcher(url).forward(request, response);
