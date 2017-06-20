@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import com.jelena.business.Customer;
 import com.jelena.business.Invoice;
 import com.jelena.business.LineItem;
+import com.jelena.business.Product;
 import com.jelena.data.CustomerDB;
 import com.jelena.data.InvoiceDB;
 import com.jelena.data.ProductDB;
@@ -91,7 +92,7 @@ public class InvoicesServlet extends HttpServlet  {
 				lineItem.setQuantity(productQuantity);
 				lineItems.add(lineItem);
 			}
-			invoice.setLineItems(lineItems);	
+			invoice.setLineItems(lineItems);
 			
 			// check whether add line item or update submit button was pressed
 			if (request.getParameter("addLineItem") != null) {
@@ -100,7 +101,12 @@ public class InvoicesServlet extends HttpServlet  {
 				LineItem lineItem = new LineItem();				
 				invoice.addLineItem(lineItem);
 				// set invoice into session
-				session.setAttribute("invoice", invoice);	
+				session.setAttribute("invoice", invoice);
+				
+				/* postavi sve producte u session*/
+				List<Product> products = ProductDB.getAllProducts();
+				session.setAttribute("products", products);
+				
 				// forward to invoice page for further updating
 				url="/invoice.jsp";	
 			}
@@ -142,7 +148,9 @@ public class InvoicesServlet extends HttpServlet  {
 			Long invoiceNumber = Long.parseLong(request.getParameter("id"));
 			System.out.println("Displaying invoice number " + invoiceNumber);
 			Invoice invoice = InvoiceDB.getInvoiceById(invoiceNumber);
-			session.setAttribute("invoice", invoice);
+			session.setAttribute("invoice", invoice);			
+			List<Product> products = ProductDB.getAllProducts();
+			session.setAttribute("products", products);
 			url="/invoice_for_update.jsp";
 		}
 /***********************************************************************************/			
