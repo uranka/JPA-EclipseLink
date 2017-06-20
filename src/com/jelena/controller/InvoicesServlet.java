@@ -32,8 +32,10 @@ public class InvoicesServlet extends HttpServlet  {
 		HttpSession session = request.getSession();					
 		String url="/index.jsp";	
 				
+		// get action from request
 		String action = request.getParameter("action");	
 		
+/*****************************************************************************/
 		if(action.equals("display_empty_invoice")) {
 			// get specified email
 	        String emailAddress = request.getParameter("email");
@@ -65,12 +67,7 @@ public class InvoicesServlet extends HttpServlet  {
 			System.out.println("invoiceDateString:" + invoiceDateString);
 			
 			// convert String to java.util.Date
-			Date invoiceDate = null;
-			try {
-				invoiceDate = new SimpleDateFormat("yyyy-MM-dd").parse(invoiceDateString);
-			} catch (ParseException e) {				
-				e.printStackTrace();
-			}
+			Date invoiceDate = stringToDateConverter(invoiceDateString);
 			
 			invoice.setProcessed(isProcessed);			
 			invoice.setInvoiceDate(invoiceDate);	
@@ -135,15 +132,16 @@ public class InvoicesServlet extends HttpServlet  {
 	        
 	        url="/customer_invoices.jsp";			
 		}
-		
+/*****************************************************************************/		
 		else if(action.equals("delete_invoice")) {
 			System.out.println("Deleting invoice");
 			Long invoiceNumber = Long.parseLong(request.getParameter("id"));
 			System.out.println("Deleting invoice number" + invoiceNumber);
 			Invoice invoice = InvoiceDB.getInvoiceById(invoiceNumber);
-			InvoiceDB.delete(invoice);			
+			InvoiceDB.delete(invoice);
+			url="/index.jsp";
 		}
-		
+/*****************************************************************************/		
 		else if(action.equals("display_invoice")) {			
 			Long invoiceNumber = Long.parseLong(request.getParameter("id"));
 			System.out.println("Displaying invoice number " + invoiceNumber);
@@ -153,11 +151,10 @@ public class InvoicesServlet extends HttpServlet  {
 			session.setAttribute("products", products);
 			url="/invoice_for_update.jsp";
 		}
-/***********************************************************************************/			
+		
 		else if(action.equals("update_invoice")) {
 			// get invoice from session
-			Invoice invoice = (Invoice)session.getAttribute("invoice");
-			System.out.println(invoice==null? "invoice je null**" : "invoice nije null**");
+			Invoice invoice = (Invoice)session.getAttribute("invoice");			
 			
 			//get new data from request and set that data into invoice
 			boolean isProcessed;
@@ -172,12 +169,7 @@ public class InvoicesServlet extends HttpServlet  {
 			System.out.println("invoiceDateString:" + invoiceDateString);
 			
 			// convert String to java.util.Date
-			Date invoiceDate = null;
-			try {
-				invoiceDate = new SimpleDateFormat("yyyy-MM-dd").parse(invoiceDateString);				
-			} catch (ParseException e) {				
-				e.printStackTrace();
-			}
+			Date invoiceDate = stringToDateConverter(invoiceDateString);
 			
 			invoice.setProcessed(isProcessed);			
 			invoice.setInvoiceDate(invoiceDate);					
@@ -189,9 +181,7 @@ public class InvoicesServlet extends HttpServlet  {
 				String pid = "productId" + i; 
 				String pq = "productQuantity" + i;
 				int productId = Integer.parseInt(request.getParameter(pid));
-				int productQuantity = Integer.parseInt(request.getParameter(pq));
-				System.out.println("~~~~~~~~~~~~~~~productId = " + productId);
-				System.out.println("~~~~~~~~~~~~~~~productQuantity = " + productQuantity);
+				int productQuantity = Integer.parseInt(request.getParameter(pq));				
 				LineItem lineItem = new LineItem();
 				lineItem.setProduct(ProductDB.getProductById(productId));
 				lineItem.setQuantity(productQuantity);
@@ -240,7 +230,19 @@ public class InvoicesServlet extends HttpServlet  {
 /***********************************************************************************/			
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
-	
+
+// return date if conversion from string is possible, otherwise returns null	
+	public static Date stringToDateConverter(String dateString){
+		final String DATE_FORMAT = "yyyy-MM-dd";
+		Date date = null;
+		try {
+			date = new SimpleDateFormat(DATE_FORMAT).parse(dateString);
+		}
+		catch(ParseException e) {
+			e.printStackTrace();			
+		}
+		return date;
+	}
 	
 	@Override
 	protected void doGet(HttpServletRequest request,

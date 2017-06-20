@@ -24,28 +24,34 @@ public class CustomersServlet extends HttpServlet {
 		HttpSession session = request.getSession();		
 		String url="/index.jsp";	
 				
+		// get action from request
 		String action = request.getParameter("action");		
 		System.out.println("action = " + action);
 		
 		if (action == null) {
 			action="display_customers";  // default action
 		}
+/*****************************************************************************/		
 		if(action.equals("display_customers")) {
 			System.out.println("About to display customers");
 			List<Customer> customers = CustomerDB.getAllCustomers();
 			request.setAttribute("customers", customers);
 			url="/index.jsp";
 		}
+/*****************************************************************************/	
+// To add customer first display empty form to enter data about customer
+// then add it (if validation succeeds) to the database		
 		else if (action.equals("display_empty_customer")) {
 			Customer customer = new Customer();
         	session.setAttribute("customer", customer);
 			url="/customer.jsp";
 		}
+	
 		else if (action.equals("add_customer")) {
-			 // get parameters from the request
-            String firstName = request.getParameter("firstName");
-            String lastName = request.getParameter("lastName");
-            String email = request.getParameter("email");
+			// get parameters from the request
+			String firstName = request.getParameter("firstName");
+			String lastName = request.getParameter("lastName");
+			String email = request.getParameter("email");
             // store data in Customer object
             Customer customer = new Customer();
             customer.setFirstName(firstName);
@@ -56,12 +62,10 @@ public class CustomersServlet extends HttpServlet {
             String message;            
             if (CustomerDB.emailExists(customer.getEmail())) {            	
                 message = "This email address already exists.<br>" +
-                          "Please enter another email address.";
-                url = "/index.jsp";
+                          "Please enter another email address.";                
             }
             else {
-                message = "Thanks for joining our email list";
-                url = "/index.jsp";
+                message = "Thanks for joining our email list";                
                 CustomerDB.insert(customer);
             }                                   
             
@@ -70,8 +74,12 @@ public class CustomersServlet extends HttpServlet {
             // set as request attribute
             request.setAttribute("customers", customers);            
             request.setAttribute("message", message);
+            // forward to index page
+            url = "/index.jsp";
 		}
-		
+/*****************************************************************************/	
+// to update customer first display it so that the data can be changed
+// then update it in the database			
 		else if(action.equals("display_customer")) {			
 			// get specified email
 	        String emailAddress = request.getParameter("email");
@@ -81,6 +89,7 @@ public class CustomersServlet extends HttpServlet {
 	        session.setAttribute("customer", customer);            	        
 	        url = "/customer_for_update.jsp";	        
 		}
+		
 		else if (action.equals("update_customer")) {
 	        // get customer from session
 			Customer customer  = (Customer)session.getAttribute("customer");
@@ -102,7 +111,7 @@ public class CustomersServlet extends HttpServlet {
 	        // forward to index.jsp
 	        url = "/index.jsp";			
 		}
-		
+/*****************************************************************************/		
 		else if (action.equals("delete_customer")) {
 			// get specified email
 	        String emailAddress = request.getParameter("email");
@@ -120,9 +129,8 @@ public class CustomersServlet extends HttpServlet {
  	        request.setAttribute("customers", customers);
 	        url = "/index.jsp";	       	
 		}
-		
-		getServletContext().getRequestDispatcher(url).forward(request, response);
-		
+/*****************************************************************************/		
+		getServletContext().getRequestDispatcher(url).forward(request, response);		
 	}
 	
 	@Override

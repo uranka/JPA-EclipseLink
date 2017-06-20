@@ -20,31 +20,34 @@ public class ProductsServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request,
             HttpServletResponse response)
-            throws ServletException, IOException  {
-		
+            throws ServletException, IOException  {		
 		
 		HttpSession session = request.getSession();					
 		String url="/index.jsp";	
 		
+		// get action from request
 		String action = request.getParameter("action");		
 		System.out.println("action = " + action);
 		
 		if (action == null) {
 			action="display_products";  // default action
 		}
-		
-		if (action.equals("display_products")){
+/*****************************************************************************/			
+		if (action.equals("display_products")) {
 			System.out.println("About to display products");
 			List<Product> products = ProductDB.getAllProducts();
 			request.setAttribute("products", products);
 			url="/products.jsp";			
 		}
+/*****************************************************************************/	
+// To add product first display empty form to enter data about product
+// then add it to the database				
 		else if(action.equals("display_empty_product")) {			
 			Product product = new Product();
-        	session.setAttribute("product", product);
-			//url="/product_for_update.jsp";
+			session.setAttribute("product", product);			
         	url="/product.jsp";
 		}
+			
 		else if(action.equals("add_product")) {			
 			 // get parameters from the request
             String name = request.getParameter("name");
@@ -56,8 +59,7 @@ public class ProductsServlet extends HttpServlet {
             product.setUnitPrice(unitPrice);
             
             ProductDB.insert(product);
-            url = "/index.jsp";         // idi na products.jsp
-           
+            url = "/index.jsp";                    
 		}
 /*****************************************************************************/	
 // to update product first display it to the user so that he can change data
@@ -69,9 +71,10 @@ public class ProductsServlet extends HttpServlet {
 			Product product = ProductDB.getProductById(productId);
 			// set it as attribute in the session
 			session.setAttribute("product", product);
-			// forward to product.jsp which shows that product data
+			// forward to product_for_update.jsp which shows that product data
 			url="/product_for_update.jsp";			
 		}
+		
 		else if (action.equals("update_product")) {
 			// get product from session
 			Product product = (Product)session.getAttribute("product");
@@ -103,8 +106,8 @@ public class ProductsServlet extends HttpServlet {
 			}
 			url="/index.jsp";
 		}
-		getServletContext().getRequestDispatcher(url).forward(request, response);
-	
+/*****************************************************************************/			
+		getServletContext().getRequestDispatcher(url).forward(request, response);	
 	}
 	
 	@Override
