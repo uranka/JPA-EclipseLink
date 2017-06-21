@@ -19,7 +19,8 @@
 			<th>processed</th>
 			<th>invoice date</th>
 			<th>update</th>
-			<th>delete</th>			
+			<th>delete</th>	
+			<th>show</th>			
 		</tr>
 		<c:forEach var="invoice"  items="${invoices}">  
 			<tr>              
@@ -28,6 +29,7 @@
           		<td><fmt:formatDate value="${invoice.invoiceDate}" pattern="dd.MM.yyyy." /></td> 
           		<td><a href="invoices?action=display_invoice&amp;id=${invoice.invoiceNumber}">update</a></td>
           		<td><a href="invoices?action=delete_invoice&amp;id=${invoice.invoiceNumber}">delete</a></td>
+          		<td><a href="invoices?action=show_invoice&amp;id=${invoice.invoiceNumber}">show</a></td>
         	</tr>        
      	</c:forEach>
      </table>           

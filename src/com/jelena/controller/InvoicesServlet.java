@@ -140,7 +140,9 @@ public class InvoicesServlet extends HttpServlet  {
 	        String emailAddress = request.getParameter("email");
 	        // get customer for given email
 	        Customer customer = CustomerDB.getCustomerByEmail(emailAddress);
-	        request.setAttribute("customer", customer);
+	        // request.setAttribute("customer", customer);
+	        // promenila sam iz request u session attribute jer ce trebati za show_invoice
+	        session.setAttribute("customer", customer);
 	        
 	        // for given customer find all invoices
 	        List<Invoice> invoices = InvoiceDB.getInvoicesByCustomer(customer);
@@ -255,7 +257,23 @@ public class InvoicesServlet extends HttpServlet  {
 				url="/invoice_for_update.jsp";
 			}
 		}	
-/***********************************************************************************/			
+/***********************************************************************************/
+		else if(action.equals("show_invoice")) {
+			System.out.println("Showing customer's invoice");
+			
+			Long invoiceNumber  = Long.parseLong(request.getParameter("id"));
+			Invoice invoice = InvoiceDB.getInvoiceById(invoiceNumber);
+			// set this invoice into request
+			request.setAttribute("invoice",	invoice); 
+			
+			// get customer from session
+			Customer  customer = (Customer)session.getAttribute("customer");
+			// set customer into request
+			request.setAttribute("customer", customer);			        
+	        url="/invoice_for_show.jsp";
+		}
+/***********************************************************************************/	        
+	        
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 
