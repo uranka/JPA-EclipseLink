@@ -45,7 +45,9 @@ public class LineItem {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
+// ovo sam negde videla ali mi glupo
+// ako nije updateovan total price gettotalprice ce vratiti pogresno
+// ali lepo je imati jednu promenljivu za total price i zvati nju a ne fju	
 	public BigDecimal getTotalPrice() {
 		return totalPrice;
 	}

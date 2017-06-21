@@ -1,7 +1,7 @@
 package com.jelena.controller;
 
 import java.io.IOException;
-
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +36,8 @@ public class InvoicesServlet extends HttpServlet  {
 		String action = request.getParameter("action");	
 		
 /*****************************************************************************/
+// To add invoice first display empty form to enter invoice data
+// then add it to the database				
 		if(action.equals("display_empty_invoice")) {
 			// get specified email
 	        String emailAddress = request.getParameter("email");
@@ -48,11 +50,10 @@ public class InvoicesServlet extends HttpServlet  {
         	session.setAttribute("invoice", invoice);
 			url="/invoice.jsp";
 		}
-/***********************************************************************************/			
+			
 		else if(action.equals("add_invoice")) {
 			// get invoice from session
-			Invoice invoice = (Invoice)session.getAttribute("invoice");
-			System.out.println(invoice==null? "invoice je null**" : "invoice nije null**");
+			Invoice invoice = (Invoice)session.getAttribute("invoice");			
 			
 			//get new data from request and set that data into invoice
 			boolean isProcessed;
@@ -94,15 +95,31 @@ public class InvoicesServlet extends HttpServlet  {
 			// check whether add line item or update submit button was pressed
 			if (request.getParameter("addLineItem") != null) {
 				System.out.println("adding line item");
+				
+				// calculate current total, ne racunaj onog praznog,
+				// proveri da li ima elemenata u listi
+				BigDecimal total = new BigDecimal(0);
+				if  (!invoice.getLineItems().isEmpty()) {				
+					for (LineItem li : invoice.getLineItems()) {
+						li.updateTotalPrice();
+						System.out.println("getTotalPrice=" + li.getTotalPrice());
+						total = total.add(li.getTotalPrice());
+						System.out.println("partial_total = " + total);
+					}
+				}
+				System.out.println("total = " + total);
+				session.setAttribute("total", total);				
+				
+				
 				// add new empty line item to invoice
 				LineItem lineItem = new LineItem();				
 				invoice.addLineItem(lineItem);
 				// set invoice into session
 				session.setAttribute("invoice", invoice);
 				
-				/* postavi sve producte u session*/
+				// postavi sve producte u session
 				List<Product> products = ProductDB.getAllProducts();
-				session.setAttribute("products", products);
+				session.setAttribute("products", products);				
 				
 				// forward to invoice page for further updating
 				url="/invoice.jsp";	
@@ -146,7 +163,18 @@ public class InvoicesServlet extends HttpServlet  {
 			Long invoiceNumber = Long.parseLong(request.getParameter("id"));
 			System.out.println("Displaying invoice number " + invoiceNumber);
 			Invoice invoice = InvoiceDB.getInvoiceById(invoiceNumber);
-			session.setAttribute("invoice", invoice);			
+			session.setAttribute("invoice", invoice);
+			
+			BigDecimal total = new BigDecimal(0);
+			for (LineItem li : invoice.getLineItems()) {
+				li.updateTotalPrice();
+				System.out.println("getTotalPrice=" + li.getTotalPrice());
+				total = total.add(li.getTotalPrice());
+				System.out.println("partial_total = " + total);
+			}
+			System.out.println("total = " + total);
+			session.setAttribute("total", total);
+			
 			List<Product> products = ProductDB.getAllProducts();
 			session.setAttribute("products", products);
 			url="/invoice_for_update.jsp";

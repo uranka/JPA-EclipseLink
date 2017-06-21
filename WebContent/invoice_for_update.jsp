@@ -64,7 +64,8 @@
         <br/>   
         <input type="submit" value="Add line item" name = "addLineItem"><br/> 
         <br/> 
-        <input type="hidden" name="numberOfLineItems" value=${fn: length(invoice.lineItems)} />                 
+        <input type="hidden" name="numberOfLineItems" value=${fn: length(invoice.lineItems)} />
+        TOTAL: ${total} <br/>                 
         <input type="submit" name="update" value="Update" >
     </form>
 </body>
