@@ -269,7 +269,18 @@ public class InvoicesServlet extends HttpServlet  {
 			// get customer from session
 			Customer  customer = (Customer)session.getAttribute("customer");
 			// set customer into request
-			request.setAttribute("customer", customer);			        
+			request.setAttribute("customer", customer);	
+			
+			// set total into request
+			BigDecimal total = new BigDecimal(0);
+			if  (!invoice.getLineItems().isEmpty()) {				
+				for (LineItem li : invoice.getLineItems()) {
+					li.updateTotalPrice();					
+					total = total.add(li.getTotalPrice());					
+				}
+			}			
+			request.setAttribute("total", total);			
+			
 	        url="/invoice_for_show.jsp";
 		}
 /***********************************************************************************/	        

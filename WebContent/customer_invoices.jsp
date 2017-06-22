@@ -4,7 +4,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Invoices</title>    
+    <title>Invoices</title>
+    <link href="<c:url value="/css/styles.css"/>" rel="stylesheet" type="text/css" />    
 </head>
 <body>
  	<h1>Customer invoices</h1>        
@@ -12,8 +13,9 @@
 	<p>Email: ${customer.email}</p>
 	<p>First Name: ${customer.firstName}</p>    
 	<p>Last Name: ${customer.lastName}</p> 
-	<p>Invoices:</p>
-	<table border="1">
+	
+	<h3>Invoices:</h3>
+	<table>
 		<tr>
 			<th>invoice number</th>
 			<th>processed</th>

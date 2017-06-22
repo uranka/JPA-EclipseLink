@@ -3,11 +3,12 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Products</title>    
+    <title>Products</title> 
+    <link href="<c:url value="/css/styles.css"/>" rel="stylesheet" type="text/css" />     
 </head>
 <body>
   <h1>Products</h1>
-	<table border="1">
+	<table>
 		<tr>
 			<th>product id</th>
 			<th>product name</th>

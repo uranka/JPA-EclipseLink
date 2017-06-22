@@ -5,7 +5,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Invoice data</title>    
+    <title>Invoice data</title>
+    <link href="<c:url value="/css/styles.css"/>" rel="stylesheet" type="text/css" />      
 </head>
 <body>
  	<h1>Invoice data</h1>        

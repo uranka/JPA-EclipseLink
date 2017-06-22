@@ -5,7 +5,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Invoice data</title>    
+    <title>Invoice data</title> 
+    <link href="<c:url value="/css/styles.css"/>" rel="stylesheet" type="text/css" />   
 </head>
 <body>
   <h1>Update invoice</h1>
@@ -65,7 +66,7 @@
         <input type="submit" value="Add line item" name = "addLineItem"><br/> 
         <br/> 
         <input type="hidden" name="numberOfLineItems" value=${fn: length(invoice.lineItems)} />
-        TOTAL: ${total} <br/>                 
+        TOTAL: ${total} $<br/>      <!-- ne preracunava mi total live je mozda bolje izbaciti ga -->            
         <input type="submit" name="update" value="Update" >
     </form>
 </body>

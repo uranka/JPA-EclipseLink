@@ -1,8 +1,10 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>Customer data</title>    
+    <link href="<c:url value="/css/styles.css"/>" rel="stylesheet" type="text/css" />    
 </head>
 <body>
   <h1>Update customer</h1>

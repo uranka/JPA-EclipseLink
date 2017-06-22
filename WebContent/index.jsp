@@ -4,12 +4,15 @@
 <head>
 	<meta charset="utf-8">
 	<title>Customers database</title>
+	<link href="<c:url value="/css/styles.css"/>" rel="stylesheet" type="text/css" />  
 </head>
 <body>
 	<h1>Customers</h1>
-	<p>${message}</p>
-	
-	<table border="1">
+	<c:if test="${message != null}">
+		<p class="warning">${message}</p> <!--message thanks for joining is not of warning type,
+		 but it is still shown as such -->
+	</c:if>
+	<table>
 		<tr>
 			<th>First Name</th>
 			<th>Last Name</th>
